@@ -5,7 +5,6 @@ import { fetchUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import { fetchThreadById } from "@/lib/actions/thread.actions";
 import Comment from "@/components/forms/Comment";
-import { json } from "node:stream/consumers";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null;
@@ -44,6 +43,25 @@ const Page = async ({ params }: { params: { id: string } }) => {
           currentUserImage={user.imageUrl}
           currentUserId={JSON.stringify(userInfo._id)}
         />
+      </div>
+
+      <div className="mt-10">
+        {thread.children.map((child: any) => {
+          return (
+            <ThreadCard
+              key={child._id}
+              id={child._id}
+              currentUserId={user?.id || ""}
+              parentId={child.parentId}
+              content={child.text}
+              author={child.author}
+              community={child.community}
+              createdAt={child.createdAt}
+              comments={child.children}
+              isComment
+            />
+          );
+        })}
       </div>
     </section>
   );

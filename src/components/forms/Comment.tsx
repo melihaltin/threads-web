@@ -15,10 +15,10 @@ import { useUploadThing } from "@/lib/uploadThing";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import createThread from "@/lib/actions/thread.actions";
 import { CommentValidation } from "@/lib/validations/thread";
 import { z } from "zod";
 import Image from "next/image";
+import { addComment } from "@/lib/actions/thread.actions";
 
 interface Props {
   threadId: string;
@@ -27,37 +27,35 @@ interface Props {
 }
 
 const Comment = ({ threadId, currentUserImage, currentUserId }: Props) => {
-  const router = useRouter();
   const pathname = usePathname();
-  const { startUpload } = useUploadThing("media");
 
-  const [files, setFiles] = useState<File[]>([]);
-
-  const form = useForm({
+  const form = useForm<z.infer<typeof CommentValidation>>({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
-      comment: "",
-      accountId: "",
+      thread: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    // await createThread({
-    //   text: values.thread,
-    //   author: userId,
-    //   communityId: null,
-    //   path: pathname,
-    // });
+    await addComment(
+      threadId,
+      values.thread,
+      JSON.parse(currentUserId),
+      pathname
+    );
 
-    router.push("/");
+    form.reset();
   };
 
   return (
     <Form {...form}>
-      <form className="flex flex-col justify-start gap-10" onSubmit={() => {}}>
+      <form
+        className="flex flex-col justify-start gap-10"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
-          name="comment"
+          name="thread"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">

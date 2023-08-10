@@ -49,7 +49,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     defaultValues: {
       image: user?.image ? user.image : "",
       name: user?.name ? user.name : "",
-      userName: user?.username ? user.username : "",
+      username: user?.username ? user.username : "",
       bio: user?.bio ? user.bio : "",
     },
   });
@@ -66,10 +66,12 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       }
     }
 
+    // console.log("values", values);
+
     await updateUser({
       name: values.name,
       path: pathname,
-      username: values.userName,
+      username: values.username,
       userId: user.id,
       bio: values.bio,
       image: values.image,
@@ -171,11 +173,11 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
         <FormField
           control={form.control}
-          name="userName"
+          name="username"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
-                Username
+                username
               </FormLabel>
               <FormControl>
                 <Input
