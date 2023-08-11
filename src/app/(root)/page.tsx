@@ -10,7 +10,7 @@ export default async function Home() {
   const user = await currentUser();
   return (
     <>
-      <h1 className="head-text text-left"></h1>
+      <h1 className="head-text text-left"> Home</h1>
 
       <section className="mt-9 flex flex-col gap-10">
         {res.posts.length === 0 ? (
